@@ -5,3 +5,8 @@
 2020-08-18 21:18:56,746:WARNING: * Debugger is active!
 2020-08-18 21:18:56,754:INFO: * Debugger PIN: 264-839-074
 2020-08-18 21:18:57,618:INFO: * Running on http://0.0.0.0:3000/ (Press CTRL+C to quit)
+2020-08-19 10:33:43,340:ERROR:File open error.
+2020-08-19 12:11:39,712:INFO: * Restarting with stat
+2020-08-19 12:11:40,171:WARNING: * Debugger is active!
+2020-08-19 12:11:40,212:INFO: * Debugger PIN: 450-845-228
+2020-08-19 12:11:41,149:INFO: * Running on http://0.0.0.0:3000/ (Press CTRL+C to quit)

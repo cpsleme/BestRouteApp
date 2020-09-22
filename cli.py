@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     # Test and load files
     filecsv = parameters[1]
-    #filecsv = 'input-routes.csv'
+    #filecsv = 'routesdb.csv'
     route_db = GraphBase(filecsv)
 
     if not route_db.conn() or not route_db.hasvertices():
@@ -46,7 +46,7 @@ if __name__ == '__main__':
         sys.exit(0)
     else:
 
-        print (f"Initial routes added from file {filecsv}.")
+        print(f"Initial routes added from file {filecsv}.")
         input_pattern = r"[A-Z]{3}-[A-Z]{3}$"
 
         # Infinite looping for input routes

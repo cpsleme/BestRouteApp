@@ -33,7 +33,7 @@ controllers.py - Controllers (métodos) usados nas requisições via API REST pa
 
 model.py - Interface entre a aplicação CLI (cli.py) e a API (api.py) e os dados, executa operações de CRUD e o "shortest path".
 
-data\input-routes.csv - Arquivo csv com as rotas mantidas via CRUD.
+data\routesdb.csv - Arquivo csv com as rotas mantidas via CRUD.
 
 data\input-routes-test.csv - Arquivo válido destinado a teste unitário.
 

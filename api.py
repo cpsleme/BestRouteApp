@@ -6,6 +6,9 @@ from flask import Flask, request
 
 # Load database
 routes_db = GraphBase()
+if not routes_db.conn():
+    print("Database is not accessible, please, verify configuration.")
+    sys.exit(0)
 
 if not routes_db.conn():
     print("Database error.")

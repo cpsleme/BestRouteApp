@@ -1,5 +1,6 @@
 import heapq
 import logging
+import os
 import re
 import sys
 
@@ -13,21 +14,46 @@ class GraphBase:
         if filedb is not None:
             db_location = filedb
         else:
-            with open('database.ini') as f:
-                try:
-                    content = f.readlines()[0]
+            try:
+                with open('database.ini') as f:
+                    content = f.readlines()[0].rstrip('\n')
                     if len(content) > 0:
                         db_location = content
-                except IOError:
-                    logging.error("Database config not accessible.")
-                finally:
-                    f.close()
+                        if not os.path.isfile(db_location):
+                            db_location = None
+
+                f.close()
+            except Exception as e:
+                print("Database config not accessible." + e)
+                logging.error("Database config not accessible." + e)
+
         self.filedb = db_location
         self.vertices = self.loadallvertices()
         self.spa_result = dict()
 
+    def conn(self):
+        """
+        Verify if file is valid with mask: OOO,DDD,999
+        """
+        if self.filedb is None:
+            return False
+        line_pattern = r"[A-Z]{3},[A-Z]{3},[\d]+$"
+        with open(self.filedb) as f:
+            try:
+                for line in f:
+                    line = line.rstrip('\n\r').upper()
+                    if not bool(re.match(line_pattern, line)):
+                        logging.error("Database error. Line: " + line)
+                        return False
+                return True
+            except Exception as e:
+                logging.error('Database is not accessible.' + e)
+                return False
+
     def commandroute(self, operation, lines, updatedline=None):
-        # Insert, update and delete routes
+        """
+        Insert, update and delete routes
+        """
         if operation == 'Insert':
             fileoperation = "a"
         else:
@@ -48,12 +74,11 @@ class GraphBase:
                     code = 200
                 message = operation + ' ok: ' + updatedline
                 logging.info(message)
+                f.close()
                 return False, message, code
-        except IOError:
-            logging.error('Database is not accessible.')
+        except Exception as e:
+            logging.error('Database is not accessible.' + e)
             return True, 'Database is not accessible', 503
-        finally:
-            f.close()
 
     def selectroute(self, route_key):
         """
@@ -74,31 +99,11 @@ class GraphBase:
                     else:
                         if lines != "":
                             lines.append(line)
-
-            except IOError:
-                logging.error('Database is not accessible.')
+            except Exception as e:
+                logging.error('Database is not accessible.' + e)
                 return True, False, 'Database is not accessible.', 503, []
-            finally:
-                f.close()
 
         return False, routeexists, message, code, lines
-
-    def conn(self):
-        """
-        Verify if file is valid with mask: OOO,DDD,999
-        """
-        line_pattern = r"[A-Z]{3},[A-Z]{3},[\d]+$"
-        with open(self.filedb) as f:
-            try:
-                for line in f:
-                    line = line.rstrip('\n\r').upper()
-                    if not bool(re.match(line_pattern, line)):
-                        logging.error("Database error. Line: " + line)
-                        return False
-                return True
-            except IOError:
-                logging.error('Database is not accessible.')
-                return False
 
     def reload(self):
         """
@@ -122,6 +127,8 @@ class GraphBase:
         """
         Create the vertices to shortest path algorithm
         """
+        if self.filedb is None:
+            return
         vertices = dict()
         line_pattern = r"[A-Z]{3},[A-Z]{3},[\d]+$"
         try:
@@ -138,21 +145,19 @@ class GraphBase:
                             vertices[start] = origin_dict
                         else:
                             vertices[start] = route
-                f.close()
+
             with open(self.filedb) as f:
-                for line in f:
-                    if bool(re.match(line_pattern, line)):
+                for line2 in f:
+                    if bool(re.match(line_pattern, line2)):
                         # Recover origin, destiny and cost
-                        start, finish, cost = line.rstrip('\n\r').split(",")
+                        start, finish, cost = line2.rstrip('\n\r').split(",")
                         # Finish must be a vertice also
                         if vertices.get(finish) is None:
                             vertices[finish] = {finish: 0}
-                f.close()
-        except IOError:
-            logging.error("File open error.")
+
+        except Exception as e:
+            logging.error("File open error." + e)
             return None
-        finally:
-            f.close()
 
         return vertices
 
