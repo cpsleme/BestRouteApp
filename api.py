@@ -21,7 +21,7 @@ root = '/api/v1'
 
 @app.route(root + '/check/<string:path>', methods=['GET'])
 def query_bestroute(path):
-    # Check a best route
+    # Check the best route
     query = Controllers(routes_db)
     # Return a json with result
     response = query.querybestroute(path)
@@ -67,4 +67,3 @@ def delete_route(route):
 if __name__ == '__main__':
     print("Server: 0.0.0.0:3000")
     app.run(host='0.0.0.0', port=3000, debug=True)
-

@@ -14,7 +14,8 @@ class Controllers:
     def __init__(self, routes_db):
         self.routes_db = routes_db
 
-    def validrouteinput(self, new_route):
+    @staticmethod
+    def validrouteinput(new_route):
         """
         Check if route is valid
         """
@@ -90,5 +91,3 @@ class Controllers:
             return jsonify({'success': 'Route deleted.'}), code
         else:
             return jsonify({'error': message}), code
-
-

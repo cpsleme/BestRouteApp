@@ -24,8 +24,8 @@ class GraphBase:
 
                 f.close()
             except Exception as e:
-                print("Database config not accessible." + e)
-                logging.error("Database config not accessible." + e)
+                print("Database config not accessible." + str(e))
+                logging.error("Database config not accessible." + str(e))
 
         self.filedb = db_location
         self.vertices = self.loadallvertices()
@@ -47,7 +47,7 @@ class GraphBase:
                         return False
                 return True
             except Exception as e:
-                logging.error('Database is not accessible.' + e)
+                logging.error('Database is not accessible.' + str(e))
                 return False
 
     def commandroute(self, operation, lines, updatedline=None):
@@ -77,7 +77,7 @@ class GraphBase:
                 f.close()
                 return False, message, code
         except Exception as e:
-            logging.error('Database is not accessible.' + e)
+            logging.error('Database is not accessible.' + str(e))
             return True, 'Database is not accessible', 503
 
     def selectroute(self, route_key):
@@ -100,7 +100,7 @@ class GraphBase:
                         if lines != "":
                             lines.append(line)
             except Exception as e:
-                logging.error('Database is not accessible.' + e)
+                logging.error('Database is not accessible.' + str(e))
                 return True, False, 'Database is not accessible.', 503, []
 
         return False, routeexists, message, code, lines
@@ -125,7 +125,7 @@ class GraphBase:
 
     def loadallvertices(self):
         """
-        Create the vertices to shortest path algorithm
+        Create the vertices to the shortest path algorithm
         """
         if self.filedb is None:
             return
@@ -156,7 +156,7 @@ class GraphBase:
                             vertices[finish] = {finish: 0}
 
         except Exception as e:
-            logging.error("File open error." + e)
+            logging.error("File open error." + str(e))
             return None
 
         return vertices

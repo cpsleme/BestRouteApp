@@ -1,13 +1,12 @@
 import requests
 from model import GraphBase
 
-
 inputfile = "data/input-routes-test.csv"
 inputinvalidfile = "data/input-routes-test-invalid.csv"
 
 
 class TestBestRoute:
-    
+
     def test_cli_validroute(self):
         """
         Test a valid route
@@ -16,7 +15,7 @@ class TestBestRoute:
         route_db = GraphBase(inputfile)
         result = route_db.shortest_route("GRU", "CDG")
         assert result == correct_result
-    
+
     def test_cli_invalidroute(self):
         """
         Test an invalid route
@@ -38,7 +37,7 @@ class TestBestRoute:
 
     def test_rest_invalidroute(self):
         """
-        Test a rest request with a invalid route
+        Test a rest request with an invalid route
         """
         correct_result = {}
         url = "http://localhost:3000/api/v1/check/OOO-DDD"
@@ -77,10 +76,3 @@ class TestBestRoute:
         response = requests.delete(delete_url)
         result = response.status_code
         assert result == correct_result
-
-    
-
-        
-
-     
-    

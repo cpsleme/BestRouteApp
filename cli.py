@@ -3,7 +3,7 @@ import re
 from model import GraphBase
 
 
-def output_bestroute(origin, result_input):
+def output_bestroute(result_input):
     """
     Print origin and best route result
     input: origin, result
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     # Test and load files
     filecsv = parameters[1]
-    #filecsv = 'routesdb.csv'
+
     route_db = GraphBase(filecsv)
 
     if not route_db.conn() or not route_db.hasvertices():
@@ -58,16 +58,14 @@ if __name__ == '__main__':
                 sys.exit()
 
             input_route = input_route.upper()
-            if bool (re.match(input_pattern, input_route)):
+            if bool(re.match(input_pattern, input_route)):
                 start, finish = input_route.split("-")
                 if start == finish:
-                    print ("Origin is equal destiny, please enter a valid route.")
+                    print("Origin is equal destiny, please enter a valid route.")
                 else:
                     result = route_db.shortest_route(start, finish)
-                    print (output_bestroute(finish, result))
+                    print(output_bestroute(result))
 
             else:
                 print("")
                 print("please enter a route, example: GRU-CDG")
-
-
